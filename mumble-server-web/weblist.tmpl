@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML lang="ja">
+	<HEAD>
+		<Title>mumble server user list</title>
+		<STYLE TYPE="text/css">
+		<!--
+			body {
+				background-color: #ffffff;
+				color: #4b4b4b;
+				font-family: verdana, arial, sans-serif;
+				font-size: 13px;
+				margin: 10px 20px;
+			}
+			dl {
+				margin-left: 5px;
+			}
+			dt {
+				clear: both;
+				font-weight: bold;
+				padding-left: 5px;
+				border-left: #4b4b4b 5px solid
+			}
+			dd {
+				float: left;
+				margin-left: 5px;
+				margin-bottom: 5px;
+				margin-top: 2px;
+			}
+		-->
+		</STYLE>
+	</HEAD>
+	<BODY bgcolor="#ffffff" text="#4b4b4b" link="#3399ff" alink="#0099cc" vlink="#006666">
+		<TMPL_LOOP NAME="servers">
+			<H1>Server #<TMPL_VAR NAME="server"> <TMPL_VAR NAME="name"></H1>
+			total: <TMPL_VAR NAME="total">
+			<dl>
+				<TMPL_LOOP NAME="channels">
+				<dt><TMPL_VAR NAME="channel">
+				<dd>
+					<TMPL_LOOP NAME="users">
+						<TMPL_VAR NAME="user">,
+					</TMPL_LOOP>
+				</TMPL_LOOP>
+			</dl>
+		</TMPL_LOOP>
+	</BODY>
+</HTML>

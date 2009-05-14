@@ -1,0 +1,58 @@
+#!/usr/bin/env python
+# -*- coding: utf-8
+#
+#	murmur_ a simple munin plugin
+#		written by withgod
+#
+#	GPLv2 http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+#
+
+import sys,os,string,Ice
+
+proxy = 'Meta:tcp -h 127.0.0.1 -p 6502'
+slice = '/usr/share/slice/Murmur.ice'
+server = string.replace(os.path.basename(sys.argv[0]), 'murmur_', '')
+
+
+if server == '':
+	server = 1
+else:
+	server = int(server)
+
+if len(sys.argv) > 1 and sys.argv[1] == 'autoconf':
+	if os.path.exists(slice):
+		print 'yes'
+		sys.exit()
+	else:
+		print 'no'
+		sys.exit(2)
+
+Ice.loadSlice(slice)
+import Murmur
+ice = Ice.initialize()
+prx = ice.stringToProxy(proxy)
+murmur = Murmur.MetaPrx.checkedCast(prx)
+
+_server = murmur.getServer(server)
+server_name = _server.getConf("registerName")
+user_count  = 0
+
+if _server.isRunning:
+	server_version = murmur.getVersion()
+	# release 1.1.8  or under getPlayers but now trunk is getUsers
+	if server_version[0] <= 1 and server_version[1] <= 1 and server_version[2] <= 8:
+		user_count = len(_server.getPlayers())
+	else:
+		user_count = len(_server.getUsers())
+
+if len(sys.argv) > 1 and sys.argv[1] == 'config':
+	print "graph_title Number of Mumble User [" + server_name + "]"
+	print "graph_args --base 1000 -l 0"
+	print "graph_category mumble"
+	print "graph_vlabel number of User"
+	print "graph_info This graph shows the number of user in mumble [" + server_name+ "]."
+	print "mumble.label users"
+	print "mumble.draw LINE2"
+else:
+	print "mumble.value %d" % (user_count)
+
