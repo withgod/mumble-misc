@@ -6,6 +6,14 @@
 #
 #	GPLv2 http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 #
+# how to use debian
+# ln -s /path/to/murmur_ /etc/munin/plugins/murmur_1
+# ln -s /path/to/murmur_ /etc/munin/plugins/murmur_2
+# ...
+# screen shot
+# http://withgod.googlecode.com/files/mumble_munin.jpg
+#
+
 
 import sys,os,string,Ice
 
