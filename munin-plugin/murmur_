@@ -35,7 +35,7 @@ if len(sys.argv) > 1 and sys.argv[1] == 'autoconf':
 		print 'no'
 		sys.exit(2)
 
-Ice.loadSlice(slice)
+Ice.loadSlice("--all -I%s %s" % ("/usr/share/ice/slice", slice))
 import Murmur
 ice = Ice.initialize()
 prx = ice.stringToProxy(proxy)
@@ -63,4 +63,11 @@ if len(sys.argv) > 1 and sys.argv[1] == 'config':
 	print "mumble.draw LINE2"
 else:
 	print "mumble.value %d" % (user_count)
+
+if ice:
+    try:
+        ice.destroy()
+    except:
+        traceback.print_exc()
+        status = 1
 
